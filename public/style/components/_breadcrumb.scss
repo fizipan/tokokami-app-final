@@ -1,0 +1,23 @@
+.breadcrumbs {
+  .breadcrumb {
+    margin: 0;
+    padding: 20px 0 10px 0;
+    background: transparent !important;
+
+    .breadcrumb-item {
+      &.active {
+        font-weight: 500;
+        color: #0c0d36;
+      }
+      a {
+        font-weight: 300;
+        color: #979797 !important;
+      }
+    }
+
+    .breadcrumb-item::before {
+      padding-right: 1.5em;
+      padding-left: 1.5em;
+    }
+  }
+}

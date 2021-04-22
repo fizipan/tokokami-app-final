@@ -1,0 +1,57 @@
+.page-details {
+  .gallery {
+    margin-top: 20px;
+    img {
+      border-radius: 10px;
+    }
+    .gallery-active {
+      max-height: 540px;
+    }
+
+    .gallery-img {
+      max-height: 120px;
+      margin-bottom: 20px;
+
+      border: 2px solid transparent;
+
+      &:hover,
+      &.active {
+        border: 2px solid #ff7158;
+      }
+    }
+  }
+
+  .store-details-container {
+    margin-top: 20px;
+
+    .store-heading {
+      margin-bottom: 18px;
+      h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 36px;
+      }
+
+      .category {
+        font-size: 14px;
+        line-height: 21px;
+        color: #979797;
+        margin-bottom: 8px;
+      }
+
+      .price {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 27px;
+        color: #ff7158;
+        margin-bottom: 10px;
+      }
+    }
+
+    .store-description {
+      line-height: 28.8px;
+      color: #525252;
+    }
+  }
+}

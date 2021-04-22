@@ -1,0 +1,33 @@
+// Import Bootstrap 4 Library
+@import '../vendor/bootstrap/scss/bootstrap.scss';
+
+// Global Styling
+@import 'global';
+@import 'fonts';
+@import 'colors';
+
+// Components
+@import 'components/product';
+@import 'components/category';
+@import 'components/breadcrumb';
+@import 'components/card-list';
+@import 'components/card-order';
+@import 'components/modal-detail';
+
+// Includes
+@import 'includes/navbar';
+@import 'includes/footer';
+
+// Transitions
+@import 'transistions/slide-fade';
+
+// Pages
+@import 'pages/home';
+@import 'pages/search';
+@import 'pages/products';
+@import 'pages/detail';
+@import 'pages/cart';
+@import 'pages/payment';
+@import 'pages/profile';
+@import 'pages/auth';
+@import 'pages/order-list';

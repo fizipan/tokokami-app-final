@@ -1,0 +1,118 @@
+.card {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0px 80px 60px rgba(202, 200, 200, 0.0224916), 0px 33.4221px 25.0666px rgba(202, 200, 200, 0.0323114), 0px 17.869px 13.4018px rgba(202, 200, 200, 0.04), 0px 10.0172px 7.51293px rgba(202, 200, 200, 0.0476886),
+    0px 5.32008px 3.99006px rgba(202, 200, 200, 0.0575083), 0px 2.21381px 1.66035px rgba(202, 200, 200, 0.08);
+
+  &.payment-info {
+    width: 345px;
+    position: fixed;
+    right: 0;
+    top: 30%;
+    transform: translateY(-110%);
+    transform: translateX(-35%);
+    transition: all 300ms;
+
+    @include media-breakpoint-up(lg) {
+      &.toggled {
+        opacity: 0;
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      position: static;
+      width: 100%;
+      transform: translateY(0);
+      transform: translateX(0);
+      z-index: 0;
+    }
+
+    .heading-info {
+      .heading-text {
+        line-height: 24px;
+        color: #a8a8a8;
+      }
+    }
+
+    .footer-info {
+      .footer-text {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 27px;
+        color: #030000;
+      }
+    }
+  }
+
+  .img-product {
+    max-height: 80px;
+    border-radius: 8px;
+  }
+
+  .title-text {
+    font-size: 18px;
+    line-height: 27px;
+    color: #000000;
+
+    @include media-breakpoint-down(md) {
+      margin-top: 10px;
+    }
+  }
+
+  .subtitle-text {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #ef823b;
+
+    span {
+      color: #979797;
+    }
+  }
+
+  .subtotal-text {
+    font-weight: 600;
+    font-size: 18px;
+    color: black;
+    @include media-breakpoint-down(sm) {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .counting {
+    .btn-count {
+      background: transparent !important;
+      border: none !important;
+    }
+
+    .input-count {
+      margin-left: 5px;
+      margin-right: 5px;
+      text-align: center;
+      width: 25px;
+      height: 25px;
+      font-size: 14px;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      &[type='number'] {
+        -moz-appearance: textfield;
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      margin-top: 10px;
+    }
+  }
+  .btn-action {
+    color: white;
+    background-color: #fc5e84;
+  }
+}

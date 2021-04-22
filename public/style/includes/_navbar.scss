@@ -1,0 +1,154 @@
+.navbar-shop {
+  padding-top: 20px;
+  font-weight: 500;
+  background: transparent;
+
+  @include media-breakpoint-down(md) {
+    background-color: white;
+  }
+
+  .nav-item {
+    margin-left: 10px;
+    margin-right: 10px;
+    .nav-border {
+      transition: all 250ms ease-in;
+      &.active {
+        color: #ef823b;
+      }
+      &.active::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #ef823b;
+        margin-top: 1px;
+      }
+
+      &:hover {
+        color: #ef823b;
+      }
+    }
+
+    .nav-border::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 2px;
+      background-color: #ef823b;
+      transition: all 250ms ease-in;
+      margin-top: 1px;
+    }
+
+    .nav-border:hover::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: #ef823b;
+    }
+
+    .btn-secondary {
+      color: white;
+      background-color: #1a2854 !important;
+      border-radius: 100px;
+      width: 46px;
+      height: 46px;
+      transition: all 300ms;
+
+      &.search-link {
+        padding: 10px 11px 11px 11px;
+      }
+
+      &:hover {
+        box-shadow: 2px 5px 20px -3px #1a2854;
+      }
+    }
+
+    .btn-login {
+      position: relative;
+      border: 1px solid #1a2854;
+      z-index: 5;
+
+      &:hover {
+        color: white;
+      }
+
+      @include media-breakpoint-down(md) {
+        margin: 10px 0;
+        width: 100%;
+      }
+    }
+
+    .btn-login::after {
+      content: '';
+      display: block;
+      position: absolute;
+      transform-origin: left;
+      transform: scaleX(0);
+      width: 100%;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: -1;
+      transition: all 300ms;
+    }
+
+    .btn-login:hover::after {
+      transform: scaleX(1);
+      background-color: #1a2854;
+    }
+
+    .btn-register {
+      position: relative;
+      color: white;
+      background-color: #1a2854;
+      z-index: 5;
+
+      @include media-breakpoint-down(md) {
+        width: 100%;
+      }
+    }
+
+    .btn-register::after {
+      content: '';
+      display: block;
+      position: absolute;
+      transform-origin: left;
+      transform: scaleX(0);
+      width: 100%;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: -1;
+      transition: all 300ms;
+    }
+
+    .btn-register:hover::after {
+      transform: scaleX(1);
+      background-color: black;
+    }
+
+    .dropdown-menu {
+      max-width: 12rem;
+    }
+
+    .divider {
+      margin-left: 5px;
+      margin-right: 5px;
+      width: 1px;
+      height: 30px;
+      border-left: 1px solid rgb(163, 163, 163);
+    }
+  }
+
+  .profile-picture {
+    max-height: 45px;
+  }
+}
+
+.navbar-fixed-top.scrolled {
+  background-color: white;
+  padding-bottom: 15px;
+  transition: background-color 250ms linear;
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.2);
+}

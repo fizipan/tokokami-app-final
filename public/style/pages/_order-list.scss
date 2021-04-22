@@ -1,0 +1,47 @@
+.page-orders {
+  padding-top: 20px;
+  .order-list {
+    h2 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+    .form-group {
+      position: relative;
+
+      label {
+        position: absolute;
+        color: #a7a7a7;
+        margin: 0;
+        top: 7px;
+        left: 15px;
+      }
+
+      .form-control {
+        padding-left: 150px;
+      }
+    }
+
+    .nav {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      &.nav-pills {
+        .nav-item {
+          .nav-link {
+            color: #888888;
+            background: none;
+            word-wrap: normal;
+
+            &.active {
+              border-radius: 0;
+              color: black;
+              border-bottom: 2px solid black;
+            }
+          }
+        }
+      }
+    }
+  }
+}

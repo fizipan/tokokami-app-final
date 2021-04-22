@@ -1,0 +1,38 @@
+.page-payment {
+  padding-top: 20px;
+  h2 {
+    font-weight: 500;
+    font-size: 24px;
+  }
+
+  .card-payment {
+    @include media-breakpoint-down(md) {
+      margin-bottom: 20px;
+    }
+    .owner {
+      font-weight: 300;
+      line-height: 24px;
+    }
+    .number {
+      font-weight: 500;
+    }
+  }
+
+  .shipping-detail {
+    .customer-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .phone-number {
+      font-size: 14px;
+      font-weight: 400;
+      margin-top: 5px;
+      margin-top: 3px;
+    }
+
+    .address {
+      font-weight: 300;
+      font-size: 14px;
+    }
+  }
+}

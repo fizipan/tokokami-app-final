@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Biodata Diri</title>
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link href="style/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light navbar-shop fixed-top navbar-fixed-top" data-aos="fade-down">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="/images/logo-tokokami.svg" alt="" />
+          TokoKami.com
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link nav-border" href="index.html">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-border" href="products.html">Produk</a>
+            </li>
+          </ul>
+
+          <!-- Desktop -->
+          <ul class="navbar-nav ml-auto d-none d-lg-flex align-items-center">
+            <li class="nav-item">
+              <a class="btn btn-secondary search-link" href="search.html">
+                <img src="/images/ic_search.svg" width="23" height="23" alt="" />
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="cart.html">
+                <img src="/images/ic_cart.svg" alt="" />
+              </a>
+            </li>
+            <li class="nav-item">
+              <div class="divider"></div>
+            </li>
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link" id="navbarDropdown" role="button" data-toggle="dropdown">
+                <img src="/images/user_pc.png" alt="profile" class="rounded-circle mr-2 profile-picture" />
+                Hi, Hafizh
+              </a>
+              <div class="dropdown-menu">
+                <a href="/order-list.html" class="dropdown-item">Pembelian</a>
+                <a href="/profile.html" class="dropdown-item">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a href="/" class="dropdown-item">logout</a>
+              </div>
+            </li>
+          </ul>
+
+          <!-- Mobile -->
+          <ul class="navbar-nav ml-auto d-block d-lg-none mt-2">
+            <li class="nav-item">
+              <a class="btn btn-secondary search-link" href="search.html">
+                <img src="/images/ic_search.svg" width="23" height="23" alt="" />
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link pt-3" href="cart.html"> Keranjang </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link" id="navbarDropdown" role="button" data-toggle="dropdown">
+                <img src="/images/user_pc.png" alt="profile" class="rounded-circle mr-2 profile-picture" />
+                Hi, Hafizh
+              </a>
+              <div class="dropdown-menu">
+                <a href="/order-list.html" class="dropdown-item">Pembelian</a>
+                <a href="/profile.html" class="dropdown-item">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a href="/" class="dropdown-item">logout</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="page-content page-profile">
+      <div class="heading-profile">
+        <div class="profile-thumb">
+          <img src="/images/profile-img.jpg" class="profile-img" alt="" />
+          <div class="edit-wrapper" onclick="thisFileUpload()">
+            <img src="/images/ic_camera.svg" class="icon-edit" alt="" />
+            <input type="file" class="d-none" id="photo" name="photo" />
+          </div>
+        </div>
+        <h5>Angular Mayasashi</h5>
+        <p class="text-muted">angularmy@gmail.com</p>
+      </div>
+      <div class="form-profile">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="username">Nama Lengkap</label>
+                <input type="text" name="username" id="username" value="Angular Mayasashi" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" value="angularmy26@gmail.com" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="phone_number">No Telepon</label>
+                <input type="tel" name="phone_number" id="phone_number" value="098987654314" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="postal_code">Kode Pos</label>
+                <input type="number" name="postal_code" id="postal_code" value="11750" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="provinces_id">Provinsi</label>
+                <select name="provinces_id" class="form-control" id="provinces_id">
+                  <option value="DKI Jakarta">DKI Jakarta</option>
+                  <option value="Jawa Barat">Jawa Barat</option>
+                  <option value="Jawab Tengah">Jawab Tengah</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="regencies_id">Kota</label>
+                <select name="regencies_id" class="form-control" id="regencies_id">
+                  <option value="Jakarta Barat">Jakarta Barat</option>
+                  <option value="Garut">Garut</option>
+                  <option value="Purbolinggo">Purbolinggo</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-10">
+              <div class="form-group">
+                <label for="address">Alamat</label>
+                <textarea name="address" id="address" class="form-control" rows="5">Jln H sanusi Gang Hamzah No 21</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-10 offset-1 text-right">
+              <button type="submit" class="btn btn-success px-4 py-2">Ubah Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col-md-5">
+            <h3>TokoKami.com</h3>
+            <p class="text-muted">Sebagai marketplace di Indonesia, kami ingin menciptakan suatu toko berbasis online untuk mempermudah konsumen dalam memenuhi kebutuhan rumah yang diinginkan tanpa ribet</p>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <h5>Layanan Kami</h5>
+                <ul>
+                  <li>
+                    <a href="">Bantuan</a>
+                  </li>
+                  <li>
+                    <a href="">Cara Pengembalian</a>
+                  </li>
+                  <li>
+                    <a href="">Konfirmasi Transfer</a>
+                  </li>
+                  <li>
+                    <a href="">Hubungi Kami</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>Tentang Kami</h5>
+                <ul>
+                  <li>
+                    <a href="">About Us</a>
+                  </li>
+                  <li>
+                    <a href="">Media</a>
+                  </li>
+                  <li>
+                    <a href="">Karir</a>
+                  </li>
+                  <li>
+                    <a href="">Kebijakan Privasi</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>Penelusuran</h5>
+                <ul>
+                  <li>
+                    <a href="">Barang Populer</a>
+                  </li>
+                  <li>
+                    <a href="">Keranjang</a>
+                  </li>
+                  <li>
+                    <a href="">Barang Terbaru</a>
+                  </li>
+                  <li>
+                    <a href="">Kategori</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>Social Media</h5>
+                <ul>
+                  <li>
+                    <a href="">Instagram</a>
+                  </li>
+                  <li>
+                    <a href="">Facebook</a>
+                  </li>
+                  <li>
+                    <a href="">Twitter</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 text-center">
+            <p class="text-muted">&copy; 2021 TokoKami • All rights reserved • Love from Jakarta</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script src="/script/navbar-scroll.js"></script>
+    <script>
+      function thisFileUpload() {
+        document.getElementById('photo').click();
+      }
+    </script>
+  </body>
+</html>
