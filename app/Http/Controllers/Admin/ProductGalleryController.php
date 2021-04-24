@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ProductGallery;
+use App\Http\Controllers\Controller;
+use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductGalleryController extends Controller
 {
@@ -14,9 +18,35 @@ class ProductGalleryController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            $query = ProductGallery::with('product');
+
+            return DataTables::of($query)
+            ->addColumn('action', function($item) {
+                return '<div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Aksi
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="'. route('product-gallery.edit', $item->id) .'">Edit</a>
+                                <form action="'. route('product-gallery.destroy', $item->id) .'" method="POST">
+                                    '. csrf_field() .'
+                                    '. method_field('DELETE') .'
+                                    <button type="submit" class="dropdown-item text-danger">Hapus</button>
+                                </form>
+                            </div>
+                        </div>';
+                
+            })
+            ->editColumn('photo', function($item) {
+                return $item->photo ? '<img src="'. Storage::url($item->photo) .'" style="max-height:75px;" alt="">' : '';
+            })
+            ->rawColumns(['action', 'photo'])
+            ->make();
+            
+        }
         return view('pages.admin.product-gallery.index');
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +54,10 @@ class ProductGalleryController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.product-gallery.create');
+        $products = Product::all();
+        return view('pages.admin.product-gallery.create', [
+            'products' => $products,
+        ]);
     }
 
     /**
@@ -35,7 +68,16 @@ class ProductGalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'products_id' => 'required|exists:products,id',
+            'photo' => 'required|image',
+        ]);
+
+        $data['photo'] = $request->file('photo')->store('assets/product-gallery', 'public');
+
+        ProductGallery::create($data);
+        return redirect()->route('product-gallery.index')
+                            ->with('success', 'Gallery Berhasil Ditambahkan');
     }
 
     /**
@@ -57,7 +99,12 @@ class ProductGalleryController extends Controller
      */
     public function edit($id)
     {
-        return view('pages.admin.product-gallery.edit');
+        $products = Product::all();
+        $gallery = ProductGallery::findOrFail($id);
+        return view('pages.admin.product-gallery.edit', [
+            'products' => $products,
+            'gallery' => $gallery,
+        ]);
     }
 
     /**
@@ -69,7 +116,22 @@ class ProductGalleryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'products_id' => 'required|exists:products,id',
+            'photo' => 'image',
+        ]);
+
+        if ($request->file('photo')) {
+            $data['photo'] = $request->file('photo')->store('assets/product-gallery', 'public');
+        } else {
+            unset($data['photo']);
+        }
+
+        $item = ProductGallery::findOrFail($id);
+        $item->update($data);
+
+        return redirect()->route('product-gallery.index')
+                            ->with('success', 'Gallery Berhasil Diubah');
     }
 
     /**
@@ -80,6 +142,11 @@ class ProductGalleryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = ProductGallery::findOrFail($id);
+
+        $item->delete();
+
+        return redirect()->route('product-gallery.index')
+                            ->with('success', 'Gallery Berhasil Dihapus');
     }
 }

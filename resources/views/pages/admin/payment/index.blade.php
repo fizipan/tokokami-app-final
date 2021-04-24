@@ -24,7 +24,6 @@
                         <th>No</th>
                         <th>Nama Pembayaran</th>
                         <th>Foto</th>
-                        <th>Slug</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -35,7 +34,7 @@
 </div>
 @endsection
 
-@push('addon-script')
+@push('end-script')
 <script>
     var datatable = $('#crudTable').DataTable({
         processing: true,
@@ -57,10 +56,6 @@
                 name: 'photo'
             },
             {
-                data: 'slug',
-                name: 'slug'
-            },
-            {
                 data: 'action',
                 name: 'action',
                 orderable: false,
@@ -69,6 +64,23 @@
             }
         ]
     });
+
+</script>
+<script src="/vendor/vue/vue.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+<script>
+    Vue.use(Toasted);
+    let self = this;
+
+    @if(session()->has('success'))
+    Vue.toasted.success(
+        "{{ session()->get('success') }}", {
+            position: 'top-center',
+            className: "rounded",
+            duration: 5000,
+        }
+    );
+    @endif
 
 </script>
 @endpush

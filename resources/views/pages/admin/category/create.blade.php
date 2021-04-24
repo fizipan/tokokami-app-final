@@ -10,27 +10,40 @@
 
 <!-- Content Row -->
 <div class="card shadow mb-4">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="name">Nama Kategori</label>
-                    <input type="text" name="name" id="name" class="form-control" />
+    <form action="{{ route('category.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="name">Nama Kategori</label>
+                        <input type="text" name="name" id="name" class="form-control" />
+                        @error('name')
+                        <span class="text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="photo">Photo</label>
+                        <input type="file" name="photo" id="photo" class="form-control" />
+                        @error('photo')
+                        <span class="text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="photo">Photo</label>
-                    <input type="file" name="photo" id="photo" class="form-control" />
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button type="submit" class="btn btn-primary">Tambah Kategori</button>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 text-right">
-                <button class="btn btn-primary">Tambah Kategori</button>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 @endsection
 

@@ -10,31 +10,46 @@
 
 <!-- Content Row -->
 <div class="card shadow mb-4">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="name">Nama Produk</label>
-                    <select name="products_id" id="products_id" class="form-control">
-                        <option value="Buku Startup $100">Buku Startup $100</option>
-                        <option value="Pulpen Pelangi">Pulpen Pelangi</option>
-                        <option value="Penggaris Luar Biasa">Penggaris Luar Biasa</option>
-                    </select>
+    <form action="{{ route('product-gallery.update', $gallery->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="products_id">Nama Produk</label>
+                        <select name="products_id" id="products_id" class="form-control">
+                            @foreach ($products as $product)
+                            <option {{ $product->id === $gallery->products_id ? 'selected' : '' }}
+                                value="{{ $product->id }}">{{ $product->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('products_id')
+                        <span class="text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="photo">Photo</label>
+                        <input type="file" name="photo" id="photo" class="form-control" />
+                        @error('photo')
+                        <span class="text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="photo">Photo</label>
-                    <input type="file" name="photo" id="photo" class="form-control" />
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button type="submit" class="btn btn-primary">Edit Gallery</button>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 text-right">
-                <button class="btn btn-primary">Tambah Gallery</button>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 @endsection
 

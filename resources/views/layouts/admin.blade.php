@@ -14,6 +14,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/datatables.min.css" />
 
     <!-- Custom styles for this template-->
     <link href="/style/pages/dashboard.min.css" rel="stylesheet" />
@@ -39,14 +40,15 @@
             <hr class="sidebar-divider my-0" />
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item{{ request()->is('admin') ? ' active' : '' }}">
                 <a class="nav-link" href="{{ route('dashboard-admin') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <li
+                class="nav-item{{ request()->is('admin/product*') || request()->is('admin/product-gallery*') ? ' active' : '' }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-shopping-bag"></i>
@@ -62,7 +64,7 @@
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item{{ request()->is('admin/category*') ? ' active' : ''}}">
                 <a class="nav-link" href="{{ route('category.index') }}">
                     <i class="fas fa-list-ul"></i>
                     <span>Categories</span>
@@ -70,21 +72,21 @@
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item{{ request()->is('admin/transaction*') ? ' active' : ''}}">
                 <a class="nav-link collapsed" href="{{ route('transaction.index') }}">
                     <i class="fas fa-clipboard-list"></i>
                     <span>Transactions</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item{{ request()->is('admin/payment*') ? ' active' : ''}}">
                 <a class="nav-link collapsed" href="{{ route('payment.index') }}">
                     <i class="fas fa-money-check-alt"></i>
                     <span>Payments</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item{{ request()->is('admin/account-number*') ? ' active' : ''}}">
                 <a class="nav-link collapsed" href="{{ route('account-number.index') }}">
                     <i class="fab fa-cc-visa"></i>
                     <span>Account Number</span>
@@ -92,14 +94,14 @@
             </li>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
+            <li class="nav-item{{ request()->is('admin/user*') ? ' active' : ''}}">
                 <a class="nav-link" href="{{ route('user.index') }}">
                     <i class="fas fa-user"></i>
                     <span>Users</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span></a>
             </li>
@@ -167,7 +169,7 @@
                                     Back to Home
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -189,7 +191,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; Tokokami {{ date('Y') }}</span>
                     </div>
                 </div>
             </footer>
@@ -231,6 +233,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/script/dashboard.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.24/datatables.min.js"></script>
     @stack('end-script')
 </body>
 

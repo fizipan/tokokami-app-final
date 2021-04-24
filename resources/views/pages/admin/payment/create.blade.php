@@ -11,7 +11,7 @@
 <!-- Content Row -->
 <div class="card shadow mb-4">
     <div class="card-body">
-        <form action="{{ route('payments.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('payment.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-12">
@@ -39,7 +39,7 @@
             </div>
             <div class="row">
                 <div class="col-12 text-right">
-                    <button class="btn btn-primary">Tambah Jenis Pembayaran</button>
+                    <button type="submit" class="btn btn-primary">Tambah Jenis Pembayaran</button>
                 </div>
             </div>
         </form>

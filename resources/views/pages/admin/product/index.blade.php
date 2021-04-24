@@ -11,11 +11,11 @@
 <!-- Content Row -->
 <div class="card shadow mb-4">
     <div class="card-header">
-        <a href="dashboard-product-create.html" class="btn btn-success">+ Tambah Produk</a>
+        <a href="{{ route('product.create') }}" class="btn btn-success">+ Tambah Produk</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="crudTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -23,89 +23,71 @@
                         <th>Kategori</th>
                         <th>Harga</th>
                         <th>Stok</th>
-                        <th>Description</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Buku Startup $100</td>
-                        <td>Buku Bisnis</td>
-                        <td>Rp120.000</td>
-                        <td>20</td>
-                        <td>The Nike Air Max 720 SE goes bigger than ever before with Nike's tallest Air unit yet for
-                            unimaginable, all-day comfort. There's</td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">Aksi</button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="dashboard-product-detail.html">
-                                        <i class="fas fa-edit text-secondary mr-2"></i>
-                                        Edit
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-trash-alt text-secondary mr-2"></i>
-                                        Hapus
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Pulpen Pelangi</td>
-                        <td>Peralatan Sekolah</td>
-                        <td>Rp320.000</td>
-                        <td>100</td>
-                        <td>The Nike Air Max 720 SE goes bigger than ever before with Nike's tallest Air unit yet for
-                            unimaginable, all-day comfort. There's</td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">Aksi</button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="dashboard-product-detail.html">
-                                        <i class="fas fa-edit text-secondary mr-2"></i>
-                                        Edit
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-trash-alt text-secondary mr-2"></i>
-                                        Hapus
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Ayam Geprek</td>
-                        <td>Makanan</td>
-                        <td>Rp50.000</td>
-                        <td>10</td>
-                        <td>The Nike Air Max 720 SE goes bigger than ever before with Nike's tallest Air unit yet for
-                            unimaginable, all-day comfort. There's</td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">Aksi</button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="dashboard-product-detail.html">
-                                        <i class="fas fa-edit text-secondary mr-2"></i>
-                                        Edit
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-trash-alt text-secondary mr-2"></i>
-                                        Hapus
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </div>
 </div>
 @endsection
+
+@push('end-script')
+<script>
+    let datatable = $('#crudTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ordering: true,
+        ajax: {
+            url: '{!! url()->current() !!}'
+        },
+        columns: [{
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'category.name',
+                name: 'category.name'
+            },
+            {
+                data: 'price',
+                name: 'price'
+            },
+            {
+                data: 'stock',
+                name: 'stock'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searcable: false,
+                width: '15%',
+            },
+        ]
+    });
+
+</script>
+<script src="/vendor/vue/vue.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+<script>
+    Vue.use(Toasted);
+    let self = this;
+
+    @if(session()->has('success'))
+    Vue.toasted.success(
+        "{{ session()->get('success') }}", {
+            position: 'top-center',
+            className: "rounded",
+            duration: 5000,
+        }
+    );
+    @endif
+
+</script>
+@endpush

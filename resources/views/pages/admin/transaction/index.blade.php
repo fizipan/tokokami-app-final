@@ -113,3 +113,23 @@
     </div>
 </div>
 @endsection
+
+@push('end-script')
+<script src="/vendor/vue/vue.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+<script>
+    Vue.use(Toasted);
+    let self = this;
+
+    @if(session()->has('success'))
+    Vue.toasted.success(
+        "{{ session()->get('success') }}", {
+            position: 'top-center',
+            className: "rounded",
+            duration: 5000,
+        }
+    );
+    @endif
+
+</script>
+@endpush

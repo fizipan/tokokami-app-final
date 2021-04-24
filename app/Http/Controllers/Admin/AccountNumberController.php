@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AccountNumberRequest;
+use App\Models\AccountNumber;
+use App\Models\Payment;
+use Yajra\DataTables\Facades\DataTables;
 
 class AccountNumberController extends Controller
 {
@@ -14,6 +18,30 @@ class AccountNumberController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            $query = AccountNumber::with('payment');
+
+            return DataTables::of($query)
+            ->addColumn('action', function($item) {
+                return '<div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Aksi
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="'. route('account-number.edit', $item->id) .'">Edit</a>
+                                <form action="'. route('account-number.destroy', $item->id) .'" method="POST">
+                                    '. csrf_field() .'
+                                    '. method_field('DELETE') .'
+                                    <button type="submit" class="dropdown-item text-danger">Hapus</button>
+                                </form>
+                            </div>
+                        </div>';
+                
+            })
+            ->rawColumns(['action'])
+            ->make();
+            
+        }
         return view('pages.admin.account-number.index');
     }
 
@@ -24,7 +52,10 @@ class AccountNumberController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.account-number.create');
+        $payments = Payment::all();
+        return view('pages.admin.account-number.create', [
+            'payments' => $payments,
+        ]);
     }
 
     /**
@@ -33,9 +64,14 @@ class AccountNumberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AccountNumberRequest $request)
     {
-        //
+        $data = $request->all();
+
+        AccountNumber::create($data);
+
+        return redirect()->route('account-number.index')
+                            ->with('success', 'Nomor Rekening Berhasil Ditambahkan');
     }
 
     /**
@@ -57,7 +93,12 @@ class AccountNumberController extends Controller
      */
     public function edit($id)
     {
-        return view('pages.admin.account-number.edit');
+        $payments = Payment::all();
+        $account = AccountNumber::findOrFail($id);
+        return view('pages.admin.account-number.edit', [
+            'payments' => $payments,
+            'account' => $account,
+        ]);
     }
 
     /**
@@ -67,9 +108,17 @@ class AccountNumberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AccountNumberRequest $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $item = AccountNumber::findOrFail($id);
+
+        $item->update($data);
+
+        return redirect()->route('account-number.index')
+                            ->with('success', 'Nomor Rekening Berhasil Diubah');
+
     }
 
     /**
@@ -80,6 +129,11 @@ class AccountNumberController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = AccountNumber::findOrFail($id);
+
+        $item->delete();
+        
+        return redirect()->route('account-number.index')
+                            ->with('success', 'Nomor Rekening Berhasil Dihapus');
     }
 }

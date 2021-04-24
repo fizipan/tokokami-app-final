@@ -35,7 +35,7 @@
 </div>
 @endsection
 
-@push('addon-script')
+@push('end-script')
 <script>
     var datatable = $('#crudTable').DataTable({
         processing: true,
@@ -53,8 +53,8 @@
                 name: 'name'
             },
             {
-                data: 'number_rekening',
-                name: 'number_rekening'
+                data: 'number',
+                name: 'number'
             },
             {
                 data: 'payment.name',
@@ -69,6 +69,23 @@
             }
         ]
     });
+
+</script>
+<script src="/vendor/vue/vue.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+<script>
+    Vue.use(Toasted);
+    let self = this;
+
+    @if(session()->has('success'))
+    Vue.toasted.success(
+        "{{ session()->get('success') }}", {
+            position: 'top-center',
+            className: "rounded",
+            duration: 5000,
+        }
+    );
+    @endif
 
 </script>
 @endpush

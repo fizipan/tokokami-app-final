@@ -11,7 +11,7 @@
 <!-- Content Row -->
 <div class="card shadow mb-4">
     <div class="card-body">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('account-number.update', $account->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="row">
@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label for="name">Pemilik Rekening</label>
                         <input type="text" name="name" id="name" class="form-control"
-                            value="{{ old('name') ?? $rekening->name }}" />
+                            value="{{ old('name') ?? $account->name }}" />
                         @error('name')
                         <span class="text-danger">
                             {{ $message }}
@@ -29,10 +29,10 @@
                 </div>
                 <div class="col-12">
                     <div class="form-group">
-                        <label for="number_rekening">No Rekening</label>
-                        <input type="text" name="number_rekening" id="number_rekening"
-                            value="{{ old('number_rekening') ?? $rekening->number_rekening }}" class="form-control" />
-                        @error('number_rekening')
+                        <label for="number">No Rekening</label>
+                        <input type="number" name="number" id="number" value="{{ old('number') ?? $account->number }}"
+                            class="form-control" />
+                        @error('number')
                         <span class="text-danger">
                             {{ $message }}
                         </span>
@@ -45,7 +45,7 @@
                         <select name="payments_id" id="payments_id" class="form-control">
                             @foreach ($payments as $payment)
                             <option value="{{ $payment->id }}"
-                                {{ $payment->id == $rekening->payments_id ? 'selected' : '' }}>{{ $payment->name }}
+                                {{ $payment->id == $account->payments_id ? 'selected' : '' }}>{{ $payment->name }}
                             </option>
                             @endforeach
                             @error('payments_id')
@@ -59,7 +59,7 @@
             </div>
             <div class="row">
                 <div class="col-12 text-right">
-                    <button class="btn btn-primary">Edit Nomor Rekening</button>
+                    <button type="submit" class="btn btn-primary">Edit Nomor Rekening</button>
                 </div>
             </div>
         </form>

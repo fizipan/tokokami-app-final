@@ -11,7 +11,7 @@
 <!-- Content Row -->
 <div class="card shadow mb-4">
     <div class="card-body">
-        <form action="{{ route('payments.update', $payment->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('payment.update', $payment->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row">
