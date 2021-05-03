@@ -18,45 +18,33 @@
                     <h5 class="my-3" style="font-size: 18px">Kirim Ke Rekening Ini</h5>
                     <hr />
                     <div class="row">
+                        @forelse ($accounts as $account)
                         <div class="col-md-6">
                             <div class="card card-payment">
                                 <div class="card-body">
                                     <div class="row justify-content-between align-items-center">
                                         <div class="col-4">
-                                            <img src="/images/payment-dana.png" class="w-100" alt="" />
+                                            <img src="{{ Storage::url($account->payment->photo) }}" class="w-100" alt="" />
                                         </div>
                                         <div class="col-8">
-                                            <div class="owner">Jakob Botosh</div>
-                                            <div class="number">098987899876</div>
+                                            <div class="owner">{{ $account->name }}</div>
+                                            <div class="number">{{ $account->number }}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card card-payment">
-                                <div class="card-body">
-                                    <div class="row justify-content-between align-items-center">
-                                        <div class="col-4">
-                                            <img src="/images/payment-ovo.png" class="w-100" alt="" />
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="owner">Masayashi</div>
-                                            <div class="number">098987899876</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @empty
+                            
+                        @endforelse
                     </div>
                     <h5 class="my-3" style="font-size: 18px">Alamat Pengiriman</h5>
                     <hr />
                     <div class="shipping-detail">
-                        <div class="customer-name">Midun Van Jok</div>
-                        <div class="phone-number">098987876567</div>
-                        <div class="address two">Jl. H. Sanusi, Kecamatan Cengkareng, Kota Jakarta Barat, Daerah Khusus
-                            Ibukota Jakarta</div>
-                        <div class="address one">Cengkareng, Jakarta Barat, 11750</div>
+                        <div class="customer-name">{{ $transaction->user->name }}</div>
+                        <div class="phone-number">{{ $transaction->user->phone_number }}</div>
+                        <div class="address two">{{ $transaction->user->address }}</div>
+                        <div class="address one">{{ $transaction->user->regency->name }} {{ $transaction->user->province->name }}, {{ $transaction->user->postal_code }}</div>
                     </div>
                 </div>
             </div>
@@ -70,37 +58,33 @@
                 <div class="col-lg-8">
                     <h5 class="mt-4 mb-3" style="font-size: 18px">Pesanan Kamu</h5>
                     <hr />
-                    <div class="card" v-for="(product, index) in products" :key="product.id">
+                    @forelse ($transaction->transaction_details as $detail)
+                    <div class="card">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
-                                    <img :src="product.url" class="img-product" alt="" />
+                                    <img src="{{ Storage::url($detail->product->galleries->first()->photo) }}" class="img-product" alt="" />
                                 </div>
                                 <div class="col-md-5">
-                                    <div class="title-text">@{{ product.name }}</div>
+                                    <div class="title-text">{{ $detail->product->name }}</div>
                                     <div class="subtitle-text">Rp.
-                                        @{{ new Intl.NumberFormat().format(product.price) }}<span
+                                        {{ number_format($detail->product_price)}}<span
                                             class="category-text">,
-                                            Stok @{{ product.stock }}</span></div>
+                                            Stok {{ $detail->product->stock }}</span></div>
                                 </div>
                                 <div class="col-md-2 counting">
-                                    <input type="number" readonly v-model="product.count" class="input-count" />
-                                    <div class="row mt-2">
-                                        <div class="col-12">
-                                            <p class="text-danger pl-1" style="font-size: 12px; font-weight: 500"
-                                                v-if="product.count <= 0 ">Harus di isi</p>
-                                            <p class="text-danger" style="font-size: 12px; font-weight: 500"
-                                                v-if="product.count > product.stock">Max Stok (@{{ product.stock }})</p>
-                                        </div>
-                                    </div>
+                                    <input type="number" readonly value="{{ $detail->amount }}" class="input-count" />
                                 </div>
                                 <div class="col-md-3">
                                     <div class="subtotal-text">Rp.
-                                        @{{ new Intl.NumberFormat().format(product.price * product.count) }}</div>
+                                        {{ number_format($detail->subtotal) }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @empty
+                        
+                    @endforelse
                 </div>
                 <div class="card payment-info">
                     <div class="card-body">
@@ -111,7 +95,7 @@
                                     <div class="heading-text">Total Harga</div>
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <div class="heading-text">Rp. 340,000</div>
+                                    <div class="heading-text">Rp. {{ number_format($transaction->total_price) }}</div>
                                 </div>
                             </div>
                             <div class="row justify-content-between mt-2">
@@ -119,7 +103,7 @@
                                     <div class="heading-text">Ongkos Kirim</div>
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <div class="heading-text">Rp. 10,000</div>
+                                    <div class="heading-text">Rp. {{ number_format($transaction->shipping_price) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -130,11 +114,11 @@
                                     <div class="footer-text">Grand Total</div>
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <div class="footer-text">Rp. 350,000</div>
+                                    <div class="footer-text">Rp. {{ number_format($transaction->total_price + $transaction->shipping_price) }}</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="checkout.html" disa class="btn btn-success btn-block mt-4">Konfirmasi Pembayaran</a>
+                        <a target="_blank" href="https://api.whatsapp.com/send?phone=6281285417293&text=Halo,%20Saya%20sudah%20melakukan%20pembayaran%20dengan%20no%20invoice%20{{ $transaction->code }}.%20Nama%20Saya%20adalah%20{{ $transaction->user->name }}.%20Berikut%20saya%20lampirkan%20foto%20bukti%20pembayaran:" class="btn btn-success btn-block mt-4">Konfirmasi Pembayaran</a>
                     </div>
                 </div>
             </div>
@@ -144,42 +128,5 @@
 @endsection
 
 @push('end-script')
-<script src="/vendor/vue/vue.js"></script>
-<script>
-    var productCart = new Vue({
-        el: '#product-cart',
-        mounted() {
-            AOS.init();
-        },
-        data: {
-            products: [{
-                    id: 1,
-                    url: '/images/product-1.jpg',
-                    name: 'Lifebuoy Bodywash',
-                    price: 200000,
-                    stock: 10,
-                    count: 1,
-                },
-                {
-                    id: 2,
-                    url: '/images/product-2.jpg',
-                    name: 'Beras Coolent',
-                    price: 350000,
-                    stock: 60,
-                    count: 1,
-                },
-                {
-                    id: 3,
-                    url: '/images/product-3.jpg',
-                    name: 'Susu Botol',
-                    price: 40000,
-                    stock: 100,
-                    count: 1,
-                },
-            ],
-        },
-    });
-
-</script>
 <script src="/script/card-payment-info.js"></script>
 @endpush

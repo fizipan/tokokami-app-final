@@ -6,7 +6,7 @@
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+    <a href="{{ route('export-transaction') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
 </div>
 
@@ -76,21 +76,38 @@
 </div>
 
 <div class="row mt-2">
+    @forelse ($recents as $recent)
     <div class="col-12 mb-3">
-        <a href="" class="card shadow-sm text-decoration-none">
+        <a href="{{ route('transaction.edit', $recent->id) }}" class="card shadow-sm text-decoration-none">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark font-weight-bold">#JBL09878</h5>
+                        <h5 class="mb-0 text-dark font-weight-bold">#TK-{{ $recent->code }}</h5>
                     </div>
                     <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">Sandhika Pratama</h5>
+                        <h5 class="mb-0 text-dark">{{ $recent->user->name }}</h5>
                     </div>
                     <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">Dikonfirmasi</h5>
+                        @if ($recent->shipping_status == 'PENDING' || $recent->shipping_status == 'CANCEL')
+                        <div class="badge badge-danger">
+                            {{ $recent->shipping_status }}
+                        </div>
+                        @elseif ($recent->shipping_status == 'DIPROSES')
+                        <div class="badge badge-warning">
+                            {{ $recent->shipping_status }}
+                        </div>
+                        @elseif ($recent->shipping_status == 'DIKIRIM')
+                        <div class="badge badge-info">
+                            {{ $recent->shipping_status }}
+                        </div>
+                        @else
+                        <div class="badge badge-success">
+                            {{ $recent->shipping_status }}
+                        </div>
+                        @endif
                     </div>
                     <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">12, Januari 2020</h5>
+                        <h5 class="mb-0 text-dark">{{ $recent->created_at->format('d, F Y') }}</h5>
                     </div>
                     <div class="col-md-1 d-none d-md-block">
                         <img src="/images/icon-row.svg" alt="" />
@@ -99,51 +116,12 @@
             </div>
         </a>
     </div>
-    <div class="col-12 mb-3">
-        <a href="" class="card shadow-sm text-decoration-none">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-2 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark font-weight-bold">#JBL09245</h5>
-                    </div>
-                    <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">Anggun Permatasari</h5>
-                    </div>
-                    <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">Terkirim</h5>
-                    </div>
-                    <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">9, Januari 2020</h5>
-                    </div>
-                    <div class="col-md-1 d-none d-md-block">
-                        <img src="/images/icon-row.svg" alt="" />
-                    </div>
-                </div>
-            </div>
-        </a>
+    @empty
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            Transaksi Tidak DiTemukan
+        </div>
     </div>
-    <div class="col-12 mb-3">
-        <a href="" class="card shadow-sm text-decoration-none">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-2 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark font-weight-bold">#JBL12345</h5>
-                    </div>
-                    <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">Rizki Aditya</h5>
-                    </div>
-                    <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">Diproses</h5>
-                    </div>
-                    <div class="col-md-3 mb-2 mb-lg-0">
-                        <h5 class="mb-0 text-dark">24, Januari 2020</h5>
-                    </div>
-                    <div class="col-md-1 d-none d-md-block">
-                        <img src="/images/icon-row.svg" alt="" />
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
+    @endforelse
 </div>
 @endsection

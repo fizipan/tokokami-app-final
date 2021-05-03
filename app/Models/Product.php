@@ -31,4 +31,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductGallery::class, 'products_id', 'id');
     }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'products_id');
+    }
+
+    public function transaction_details()
+    {
+        return $this->hasMany(TransactionDetail::class, 'transactions_id');
+    }
 }

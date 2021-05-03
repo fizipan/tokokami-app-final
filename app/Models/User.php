@@ -25,6 +25,7 @@ class User extends Authenticatable
         'address',
         'provinces_id',
         'regencies_id',
+        'postal_code',
         'phone_number',
         'photo',
         'roles',
@@ -48,4 +49,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'users_id');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'provinces_id');
+    }
+
+    public function regency()
+    {
+        return $this->belongsTo(Regency::class, 'regencies_id', 'city_id');
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'users_id');
+    }
 }

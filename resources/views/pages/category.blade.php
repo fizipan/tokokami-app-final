@@ -15,42 +15,18 @@
             <div class="row">
                 <div class="col-12">
                     <div class="owl-carousel owl-theme">
-                        <a href="products.html" class="component-category">
+                        @forelse ($categories as $category)
+                        <a href="{{ route('categories-detail', $category->slug) }}" class="component-category">
                             <div class="img-wrapper">
-                                <img src="/images/category-1.svg" alt="" />
+                                <img src="{{ Storage::url($category->photo) }}" alt="" />
                             </div>
-                            <div class="category-name">Pria</div>
+                            <div class="category-name">{{ $category->name }}</div>
                         </a>
-                        <a href="products.html" class="component-category">
-                            <div class="img-wrapper">
-                                <img src="/images/category-2.svg" alt="" />
-                            </div>
-                            <div class="category-name">Wanita</div>
-                        </a>
-                        <a href="products.html" class="component-category">
-                            <div class="img-wrapper">
-                                <img src="/images/category-3.svg" alt="" />
-                            </div>
-                            <div class="category-name">Anak-anak</div>
-                        </a>
-                        <a href="products.html" class="component-category">
-                            <div class="img-wrapper">
-                                <img src="/images/category-4.svg" alt="" />
-                            </div>
-                            <div class="category-name">Kebersihan</div>
-                        </a>
-                        <a href="products.html" class="component-category">
-                            <div class="img-wrapper">
-                                <img src="/images/category-5.svg" alt="" />
-                            </div>
-                            <div class="category-name">Kesehatan</div>
-                        </a>
-                        <a href="products.html" class="component-category">
-                            <div class="img-wrapper">
-                                <img src="/images/category-6.svg" alt="" />
-                            </div>
-                            <div class="category-name">Dapur</div>
-                        </a>
+                        @empty
+                        <div class="alert alert-info">
+                            Kategori Tidak Ditemukan
+                        </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -62,14 +38,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
+                    @isset($categoryDetail)
+                    <h5>Kategori {{ $categoryDetail->name }}</h5>
+                    @else
                     <h5>Semua Produk</h5>
+                    @endisset
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
-                    <a href="details.html" class="component-product">
+            <div class="row list-product">
+                @php
+                $animate = 0;
+                @endphp
+                @forelse ($products as $product)
+                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $animate += 100 }}">
+                    <a href="{{ route('product', $product->slug) }}" class="component-product">
                         <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-1.jpg')"></div>
+                            <div class="product-image" style="
+                            @if ($product->galleries->count() > 0)
+                            background-image: url('{{ Storage::url($product->galleries->first()->photo) }}')
+                            @else
+                            background-color: #939393;
+                            @endif
+                            ">
+                            </div>
                             <div
                                 class="hover-product position-absolute d-flex justify-content-center align-items-center">
                                 <div class="icon-wrapper">
@@ -79,154 +70,34 @@
                         </div>
                         <div class="row align-items-center mt-2">
                             <div class="col-8">
-                                <div class="category-name">Dapur</div>
-                                <div class="product-name">Minyak Bimoli</div>
-                                <div class="product-price">Rp. 80.000</div>
+                                <div class="category-name">{{ $product->category->name }}</div>
+                                <div class="product-name">{{ Str::limit($product->name , 13) }}</div>
+                                <div class="product-price">Rp. {{ number_format($product->price) }}</div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-2.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
+                @empty
+                <div class="col-md-12">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="alert alert-info text-center">
+                                Produk Tidak Ditemukan
                             </div>
                         </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Sabun Mandi</div>
-                                <div class="product-price">Rp. 200.000</div>
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-3.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Sepatu</div>
-                                <div class="product-name">Sepatu Kulit Baja</div>
-                                <div class="product-price">Rp. 500.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-4.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Dapur</div>
-                                <div class="product-name">Beras Coolent</div>
-                                <div class="product-price">Rp. 350.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="500">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-5.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Pengharum Ruangan</div>
-                                <div class="product-price">Rp. 300.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="600">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-6.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Sabun Muka Wanita</div>
-                                <div class="product-price">Rp. 150.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="700">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-7.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Susu Botol</div>
-                                <div class="product-price">Rp. 40.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-8.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Wanita</div>
-                                <div class="product-name">Kosmetik Wanita</div>
-                                <div class="product-price">Rp. 500.000</div>
-                            </div>
-                        </div>
-                    </a>
+                @endforelse
+            </div>
+            @if(!isset($categoryDetail))
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <button type="button" id="loadMore" class="btn btn-primary px-4 py-2"
+                        style="background-color: #1A2854 !important" data-total-result="{{ $productCount ?? '' }}">Load
+                        More Product</button>
                 </div>
             </div>
+            @endif
         </div>
     </section>
 </div>
@@ -243,4 +114,65 @@
 @push('end-script')
 <script src="/vendor/owl-carousel/js/owl.carousel.min.js"></script>
 <script src="/script/owl-carousel.js"></script>
+
+<script>
+    $(function () {
+        $('#loadMore').on('click', function () {
+            let totalCurrentResult = $('.component-product').length;
+
+            $.ajax({
+                url: '{{ route('api-more-product') }}',
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    skip: totalCurrentResult,
+                },
+                beforeSend: function () {
+                    $('#loadMore').html('loading...');
+                },
+                success: function (response) {
+                    $('#loadMore').html('Load More Product');
+                    let html = ''
+                    let animate = 800;
+                    let formatNumber = new Intl.NumberFormat();
+                    $.each(response, function(index, value) {
+                        html += `<div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="${animate += 100}">
+                                    <a href="/product/${value.slug}" class="component-product">
+                                        <div class="thumbnail-image">
+                                            <div class="product-image" style="background-image: url('storage/${value.galleries[0].photo}')">
+                                            </div>
+                                            <div
+                                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
+                                                <div class="icon-wrapper">
+                                                    <img src="/images/ic_eye.svg" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mt-2">
+                                            <div class="col-8">
+                                                <div class="category-name">${value.category.name}</div>
+                                                <div class="product-name">${value.name}</div>
+                                                <div class="product-price">Rp. ${formatNumber.format(value.price)}</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>`;
+                    });
+
+                    $('.list-product').append(html);
+
+                    let totalCurrentResult = $('.component-product').length;
+                    let totalResult = parseInt($('#loadMore').data('totalResult'));
+                    
+                    if (totalCurrentResult == totalResult) {
+                        $('#loadMore').remove();
+                    } else {
+                        $('#loadMore').html('Load More Products');
+                    }
+                }
+            });
+        });
+    });
+
+</script>
 @endpush

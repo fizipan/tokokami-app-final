@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="row" id="product-cart">
-                <div class="col-lg-8">
+                <div class="col-lg-8" v-if="products.length > 0">
                     <div class="card" v-for="(product, index) in products" :key="product.id">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -66,13 +66,26 @@
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">Aksi</button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Simpan Dulu</a>
-                                            <a class="dropdown-item" href="#">Hapus</a>
+                                            <form :action="product.urlSave" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="dropdown-item">Simpan Dulu</button>
+                                            </form>
+                                            <form :action="product.urlDelete" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item">Hapus</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-8" v-else>
+                    <div class="alert alert-info text-center">
+                        Belum Ada Barang Di Kerajangmu Yuk <strong><a href="{{ route('categories') }}" class="text-dark">Belanja Sekarang!</a></strong>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -85,7 +98,7 @@
                                         <div class="heading-text">Jumlah Barang</div>
                                     </div>
                                     <div class="col-6 d-flex justify-content-end">
-                                        <div class="heading-text">@{{ allCountProducts() }} Barang</div>
+                                        <div class="heading-text">@{{ allCountProducts }} Barang</div>
                                     </div>
                                 </div>
                             </div>
@@ -96,12 +109,15 @@
                                         <div class="footer-text">Total Harga</div>
                                     </div>
                                     <div class="col-6 d-flex justify-content-end">
-                                        <div class="footer-text">Rp. @{{ new Intl.NumberFormat().format(grandTotal()) }}
+                                        <div class="footer-text">Rp. @{{ new Intl.NumberFormat().format(grandTotal) }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="checkout.html" disa class="btn btn-success btn-block mt-4">Checkout Sekarang</a>
+                            <form action="{{ route('cart-shipment') }}" method="POST" @submit.prevent="updateCart()">
+                                <button type="submit" v-if="products.length > 0" id="btn-checkout" class="btn btn-success btn-block mt-4">Checkout Sekarang</button>
+                                <button type="button" v-else disabled class="btn btn-success btn-block mt-4">Checkout Sekarang</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -112,26 +128,27 @@
     <section class="cart-save" id="cart-save">
         <div class="container">
             <div class="row">
-                <div class="col-12">
+                <div class="col-lg-6">
                     <h2>Barang Yang Disimpan</h2>
                     <p class="text-muted">Pindah Ke Keranjang dan Checkout</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-8">
+                    @forelse ($saveProducts as $item)
                     <div class="card">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
-                                    <img src="/images/cart-1.jpg" class="img-product" alt="" />
+                                    <img src="{{ Storage::url($item->product->galleries->first()->photo) }}" class="img-product" alt="" />
                                 </div>
                                 <div class="col-md-5">
-                                    <div class="title-text">Lifebuoy Bodywash</div>
-                                    <div class="subtitle-text">Rp. 200.000<span class="category-text">,
-                                            Kebersihan</span></div>
+                                    <div class="title-text">{{ $item->product->name }}</div>
+                                    <div class="subtitle-text">Rp. {{ number_format($item->product->price) }}<span class="category-text">,
+                                            Stok {{ $item->product->stock }}</span></div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="subtotal-text">200.000</div>
+                                    <div class="subtotal-text">{{ number_format($item->subtotal) }}</div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="dropdown">
@@ -139,46 +156,36 @@
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">Aksi</button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Pindahkan</a>
-                                            <a class="dropdown-item" href="#">Hapus</a>
+                                            <form action="{{ route('cart-move', $item->id) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="dropdown-item">Pindahkan</button>
+                                            </form>
+                                            <form action="{{ route('cart-delete', $item->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item">Hapus</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-md-2">
-                                    <img src="/images/cart-1.jpg" class="img-product" alt="" />
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="title-text">Lifebuoy Bodywash</div>
-                                    <div class="subtitle-text">Rp. 200.000<span class="category-text">,
-                                            Kebersihan</span></div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="subtotal-text">200.000</div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-action dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">Aksi</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Pindahkan</a>
-                                            <a class="dropdown-item" href="#">Hapus</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @empty
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <div class="alert alert-info">
+                                Tidak Ada Produk Yang Disimpan    
+                            </div>    
+                        </div>    
+                    </div>  
+                    @endforelse
                 </div>
             </div>
         </div>
     </section>
+
     <!-- New Products -->
     <section class="new-products mt-5" id="new-products">
         <div class="container">
@@ -188,10 +195,18 @@
                 </div>
             </div>
             <div class="row mt-2">
+                @forelse ($productRandom  as $product)
                 <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
-                    <a href="details.html" class="component-product">
+                    <a href="{{ route('product', $product->slug) }}" class="component-product">
                         <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-1.jpg')"></div>
+                            <div class="product-image" style="
+                            @if ($product->galleries->count() > 0)
+                            background-image: url('{{ Storage::url($product->galleries->first()->photo) }}')
+                            @else
+                            background-color: #939393;
+                            @endif
+                            ">
+                            </div>
                             <div
                                 class="hover-product position-absolute d-flex justify-content-center align-items-center">
                                 <div class="icon-wrapper">
@@ -201,205 +216,74 @@
                         </div>
                         <div class="row align-items-center mt-2">
                             <div class="col-8">
-                                <div class="category-name">Dapur</div>
-                                <div class="product-name">Minyak Bimoli</div>
-                                <div class="product-price">Rp. 80.000</div>
+                                <div class="category-name">{{ $product->category->name }}</div>
+                                <div class="product-name">{{ Str::limit($product->name, 13) }}</div>
+                                <div class="product-price">Rp. {{ number_format($product->price) }}</div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-2.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
+                @empty
+                <div class="col-12">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="alert alert-info">
+                                Produk Tidak Ditemukan
                             </div>
                         </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Sabun Mandi</div>
-                                <div class="product-price">Rp. 200.000</div>
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-3.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Sepatu</div>
-                                <div class="product-name">Sepatu Kulit Baja</div>
-                                <div class="product-price">Rp. 500.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-4.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Dapur</div>
-                                <div class="product-name">Beras Coolent</div>
-                                <div class="product-price">Rp. 350.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="500">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-5.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Pengharum Ruangan</div>
-                                <div class="product-price">Rp. 300.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="600">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-6.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Sabun Muka Wanita</div>
-                                <div class="product-price">Rp. 150.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="700">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-7.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Kebersihan</div>
-                                <div class="product-name">Susu Botol</div>
-                                <div class="product-price">Rp. 40.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800">
-                    <a href="details.html" class="component-product">
-                        <div class="thumbnail-image">
-                            <div class="product-image" style="background-image: url('/images/product-8.jpg')"></div>
-                            <div
-                                class="hover-product position-absolute d-flex justify-content-center align-items-center">
-                                <div class="icon-wrapper">
-                                    <img src="/images/ic_eye.svg" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-2">
-                            <div class="col-8">
-                                <div class="category-name">Wanita</div>
-                                <div class="product-name">Kosmetik Wanita</div>
-                                <div class="product-price">Rp. 500.000</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
+
 </div>
 @endsection
 
 @push('end-script')
 <script src="/vendor/vue/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     var productCart = new Vue({
         el: '#product-cart',
         mounted() {
             AOS.init();
         },
-        data: {
-            products: [{
-                    id: 1,
-                    url: '/images/product-1.jpg',
-                    name: 'Lifebuoy Bodywash',
-                    price: 200000,
-                    stock: 10,
-                    count: 1,
-                },
-                {
-                    id: 2,
-                    url: '/images/product-2.jpg',
-                    name: 'Beras Coolent',
-                    price: 350000,
-                    stock: 60,
-                    count: 1,
-                },
-                {
-                    id: 3,
-                    url: '/images/product-3.jpg',
-                    name: 'Susu Botol',
-                    price: 40000,
-                    stock: 100,
-                    count: 1,
-                },
-            ],
+        data() {
+            return {
+                products: [
+                    @foreach ($carts as $item)   
+                    {
+                        id: {{ $item->id }},
+                        url: '{{ Storage::url($item->product->galleries->first()->photo) }}',
+                        name: '{{ $item->product->name }}',
+                        price: {{ $item->product->price }},
+                        stock: {{ $item->product->stock }},
+                        count: {{ $item->amount }},
+                        urlDelete: "cart/{{ $item->id }}",
+                        urlSave: "cart/save/{{ $item->id }}",
+                    },
+                    @endforeach
+                ],
+            }
+            
         },
         methods: {
-            allCountProducts() {
-                return this.products
-                    .filter((product) => (product.count <= '' ? 0 : 1))
-                    .reduce((acc, currentValue) => {
-                        return acc + parseInt(currentValue.count);
-                    }, 0);
-            },
-            grandTotal() {
-                return this.products.map((product) => product.price * product.count).reduce((acc,
-                    currentValue) => acc + parseInt(currentValue));
+            updateCart() {
+                return [...this.products].forEach(p => {
+                    axios.get('{{ route('cart-update') }}', {
+                        params: {
+                            id: p.id, 
+                            amount: p.count, 
+                            subtotal: p.count * p.price, 
+                        }
+                    })
+                    .then(function (response) {
+                        document.querySelector('#btn-checkout').innerHTML = 'Loading...';
+                        document.location.href = '{{ route('cart-shipment') }}';
+                    });
+                });
             },
             addCounter(index) {
                 return this.products[index].count++;
@@ -415,8 +299,54 @@
                 }
             },
         },
+        computed: {
+            allCountProducts() {
+                if (this.products.length) {
+                    return this.products
+                        .filter((product) => (product.count <= '' ? 0 : 1))
+                        .reduce((acc, currentValue) => {
+                            return acc + parseInt(currentValue.count);
+                        }, 0);
+                } else {
+                    return 0;
+                }
+            },
+            grandTotal() {
+                if (this.products.length) {
+                    return this.products.map((product) => product.price * product.count).reduce((acc,
+                    currentValue) => acc + parseInt(currentValue));
+                } else {
+                    return 0;
+                }
+            },
+        },
     });
 
 </script>
+
+<script src="https://unpkg.com/vue-toasted"></script>
+<script>
+    Vue.use(Toasted);
+
+    @if(session()->has('success'))
+    Vue.toasted.success(
+        "{{ session()->get('success') }}", {
+            position: 'top-center',
+            className: "rounded",
+            duration: 5000,
+        }
+    );
+    @else
+    Vue.toasted.error(
+        "{{ session()->get('error') }}", {
+            position: 'top-center',
+            className: "rounded",
+            duration: 5000,
+        }
+    );
+    @endif
+
+</script>
+
 <script src="/script/card-payment-info.js"></script>
 @endpush

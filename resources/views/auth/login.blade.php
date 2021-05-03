@@ -6,29 +6,45 @@
 <div class="form-content">
     <div class="form-heading">
         <h2>Lanjutkan Belanjamu</h2>
-        <p class="text-muted">Belum Punya Akun ? <a href="register.html" class="link-auth">Daftar</a></p>
+        <p class="text-muted">Belum Punya Akun ? <a href="{{ route('register') }}" class="link-auth">Daftar</a></p>
     </div>
-    <div class="form-input">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" class="form-control" />
+    <form action="{{ route('login') }}" method="POST">
+        @csrf
+        <div class="form-input">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                    name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                @error('email')
+
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password"
+                    class="form-control @error('password') is-invalid @enderror" name="password"
+                    required autocomplete="current-password">
+
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <button type="submit" class="btn btn-primary btn-block py-2">Masuk Akun</button>
+            <hr />
+            <a href="{{ route('socialite-redirect') }}" class="btn btn-info btn-block py-2">
+                <img src="/images/logo_google.svg" class="mr-2" alt="" />
+                Masuk / Daftar
+            </a>
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control" />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block py-2">Masuk Akun</button>
-        <hr />
-        <button type="submit" class="btn btn-info btn-block py-2">
-            <img src="/images/logo_google.svg" class="mr-2" alt="" />
-            Masuk / Daftar
-        </button>
-    </div>
+    </form>
 </div>
-
-
-
-<div class="container d-none">
+@endsection
+{{-- <div class="container d-none">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -102,5 +118,4 @@
             </div>
         </div>
     </div>
-</div>
-@endsection
+</div> --}}

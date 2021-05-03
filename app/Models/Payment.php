@@ -18,8 +18,13 @@ class Payment extends Model
 
     protected $hidden = [];
 
-    public function account_number()
+    public function account_numbers()
     {
-        return $this->hasOne(AccountNumber::class, 'payments_id', 'id');
+        return $this->hasMany(AccountNumber::class, 'payments_id', 'id');
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'payments_id');
     }
 }
